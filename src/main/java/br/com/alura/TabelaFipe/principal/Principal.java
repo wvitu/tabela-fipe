@@ -42,7 +42,10 @@ public class Principal {
         }
 
         var json = consumo.obterDados(endereco);
-        System.out.println(json);
+        if (json == null) {
+            System.out.println("❌ Erro ao buscar as marcas. Tente novamente mais tarde.");
+            return;
+        }
         var marcas = conversor.obterLista(json, Dados.class);
         marcas.stream()
                 .sorted(Comparator.comparing(Dados::codigo))
@@ -53,6 +56,10 @@ public class Principal {
 
         endereco = endereco + "/" + codigoMarca + "/modelos";
         json = consumo.obterDados(endereco);
+        if (json == null) {
+            System.out.println("❌ Erro ao buscar os modelos. Tente novamente mais tarde.");
+            return;
+        }
         var modeloLista = conversor.obterDados(json, Modelos.class);
 
         System.out.println("\nModelos dessa marca: ");
@@ -75,18 +82,25 @@ public class Principal {
 
         endereco = endereco + "/" + codigoModelo + "/anos";
         json = consumo.obterDados(endereco);
+        if (json == null) {
+            System.out.println("❌ Erro ao buscar os anos do modelo. Tente novamente mais tarde.");
+            return;
+        }
         List<Dados> anos = conversor.obterLista(json, Dados.class);
         List<Veiculo> veiculos = new ArrayList<>();
 
         for (int i = 0; i < anos.size(); i++) {
             var enderecoAnos = endereco + "/" + anos.get(i).codigo();
             json = consumo.obterDados(enderecoAnos);
+            if (json == null) {
+                System.out.println("⚠️ Não foi possível buscar avaliação para o ano " + anos.get(i).codigo());
+                continue;
+            }
             Veiculo veiculo = conversor.obterDados(json, Veiculo.class);
             veiculos.add(veiculo);
         }
 
         System.out.println("\nTodos os veículos filtrados com avaliações por ano: ");
         veiculos.forEach(System.out::println);
-
     }
 }
