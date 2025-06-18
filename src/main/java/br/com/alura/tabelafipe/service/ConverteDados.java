@@ -1,6 +1,5 @@
 package br.com.alura.tabelafipe.service;
 
-import br.com.alura.TabelaFipe.service.IConverteDados;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
