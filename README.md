@@ -1,75 +1,94 @@
-# Desafio
+# 📊 Tabela FIPE - Projeto de Consumo de API em Java
 
+Este projeto foi desenvolvido como prática do curso da Alura, com diversas melhorias adicionais para fins de portfólio.
 
-Vamos implementar uma aplicação para consultar o valor médio de veículos (carros, motos ou caminhões) de acordo com a tabela FIPE, que pode ser acessada através [desse site](https://veiculos.fipe.org.br/).
+---
 
-- A consulta aos valores dos veículos pelo site tem o seguinte fluxo:
-- Primeiramente é necessário escolher o tipo do veículo: carro, moto ou caminhão.
+## 🌟 Objetivo
 
-![image](https://github.com/jacqueline-oliveira/3257-java-desafio/assets/66698429/c64bc1d1-2957-4bca-9965-0ce2bf9a6207)
+Simular uma busca semelhante ao site da Tabela FIPE via terminal, com:
 
+* Consumo de API pública via HTTP.
+* Tratamento de exceções.
+* Validação de entradas do usuário.
+* Exportação de resultados em arquivo.
+* Estrutura profissional de projeto Java.
 
-- Depois disso, é necessário preencher a MARCA, MODELO e ANO para consulta.
+---
 
-![image](https://github.com/jacqueline-oliveira/3257-java-desafio/assets/66698429/6d85805f-d6b6-40e8-a65d-17cb13a740ed)
+## 🚀 Tecnologias Utilizadas
 
+* Java 17
+* API pública FIPE (Parallelum)
+* HTTP Client (java.net.http)
+* Manipulação de arquivos (PrintWriter)
+* Padrões de boas práticas (pacotes organizados, configuração externa)
 
-- Por fim, é exibida a avaliação apenas daquele ano escolhido.
+---
 
-  ![image](https://github.com/jacqueline-oliveira/3257-java-desafio/assets/66698429/94910321-15ed-49fe-bffc-25e1c4ab52dc)
+## 🔦 Demonstração
 
+O usuário interage via terminal:
 
+1. Escolhe o tipo de veículo (carro, moto, caminhão)
+2. Escolhe a marca (com validação)
+3. Filtra o modelo por nome
+4. Escolhe o modelo (com validação)
+5. Lista todas as avaliações por ano disponíveis
+6. Pode exportar o resultado final para `resultado.txt`
 
-## 🔨 Objetivos do projeto
+---
 
-- O objetivo do projeto é ter um fluxo similar ao que é feito no site, porém com algumas melhorias.
-- Criaremos um projeto Spring com linha de comando, utilizando a classe Scanner para fazer interações com o usuário via terminal.
-- Solicitaremos que o usuário digite o tipo de veículo desejado (carro, caminhão ou moto).
-- Feito isso, listaremos todas as marcas daquele tipo de veículo, solicitando que o usuário escolha uma marca pelo código.
-- Após essa escolha, listaremos todos os modelos de veículos daquela marca.
-- Solicitaremos que o usuário digite um trecho do modelo que ele quer visualizar, por exemplo **PALIO**.
-- Listaremos apenas os modelos que tiverem a palavra **PALIO** no nome.
-- Usuário escolherá um modelo específico pelo código e, diferente do site, já listaremos as avaliações para **TODOS** os anos disponíveis daquele modelo, retornando uma lista de forma similar à imagem abaixo:
+## 📦 Estrutura de Pastas
 
-![image](https://github.com/jacqueline-oliveira/3257-java-desafio/assets/66698429/3d0ac772-3eff-4bad-a1fd-e7c2f34a39bc)
+```bash
+src/main/java
+ └── br/com/alura/tabelafipe
+       ├── model
+       ├── service
+       └── principal
+```
 
+---
 
+## ⚙ Como executar
 
-## Observações:
+1. Clone o repositório:
 
-- Para realização do desafio faremos o consumo de uma API, documentada [nesse link](https://deividfortuna.github.io/fipe/).
+```bash
+git clone https://github.com/seu-usuario/seu-repo.git
+```
 
-- De acordo com o escolhido (carro, moto, ou caminhão) vamos fazer uma chamada a um dos endpoints abaixo para buscar as marcas:
+2. Compile e execute o projeto via IDE (IntelliJ, Eclipse...) ou terminal:
 
-https://parallelum.com.br/fipe/api/v1/carros/marcas
+```bash
+javac -d bin src/main/java/**/*.java
+java -cp bin br.com.alura.tabelafipe.principal.Principal
+```
 
-https://parallelum.com.br/fipe/api/v1/motos/marcas
+---
 
-https://parallelum.com.br/fipe/api/v1/caminhoes/marcas
+## 📄 Arquivo de Configuração
 
-- O retorno dessa requisição será uma lista com código e marca desejada. Caso o usuário queira por exemplo fazer uma consulta a modelos de carros da Fiat, que possui o código 21, terá que fazer uma nova requisição para o endpoint:
+As configurações (ex.: URL da API) estão centralizadas em:
 
-https://parallelum.com.br/fipe/api/v1/carros/marcas/21/modelos
+```
+src/main/resources/application.properties
+```
 
-- Feito isso, irá escolher um código de modelo, por exemplo esse **Palio Weekend Stile 1.6 mpi 16V 4p**, representado pelo código 560. Então deverá fazer uma terceira requisição para o endpoint:
+---
 
-https://parallelum.com.br/fipe/api/v1/carros/marcas/21/modelos/560/anos
+## 🏆 Aprendizados
 
-- Para saber a avaliação para cada ano disponível, teremos que fazer requisições pelo código por ano, onde obteremos um retorno similar ao que é mostrado abaixo:
+* Consumo de API com HTTP Client
+* Conversão de JSON com `record`
+* Validação de dados em tempo real
+* Tratamento de exceções com mensagens amigáveis
+* Organização modular de código
+* Geração de arquivos em disco
 
-https://parallelum.com.br/fipe/api/v1/carros/marcas/21/modelos/560/anos/2003-1
+---
 
-![image](https://github.com/jacqueline-oliveira/3257-java-desafio/assets/66698429/0bed6f40-3112-442e-a6c5-33acd8301c6c)
+## 📌 Créditos
 
-
-
-- Para podermos exibir em nossa aplicação as avaliações de todos os anos para esse modelo, será necessário trabalhar com as coleções e estruturas de repetição para poder exibir já todos as avaliações de todos os anos para o nosso usuário.
-- Utilize a biblioteca Jackson para a desserialização dos dados.
-- Modele as classes de acordo com o necessário para representar as marcas, modelos e dados dos veículos.
-- Relembre os conceitos vistos no curso para filtrar os modelos por um trecho do nome. 
-
-
-
-Bom desafio!
-
-Obs.: Desafio do curso Alura Java: trabalhando com lambdas, streams e Spring Framework. O projeto seguiu o roteiro da aula mas foram feitas melhorias conforme indicadas nos commits. 
+Projeto baseado no curso **Java: Consumindo APIs, Gravando Arquivos e Lidando com Erros** - Alura.
