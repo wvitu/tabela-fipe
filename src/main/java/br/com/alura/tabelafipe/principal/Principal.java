@@ -17,31 +17,29 @@ public class Principal {
     private ConsumoApi consumo = new ConsumoApi();
     private ConverteDados conversor = new ConverteDados();
 
-    private final String URL_BASE = "https://parallelum.com.br/fipe/api/v1/";
-
     public void exibeMenu() {
-        var menu = """
-               *** OPÇÕES ***
-               Carro
-               Moto
-               Caminhão
-               
-               Digite uma das opções para consulta: 
-               """;
+        System.out.println("============================");
+        System.out.println("   Consulta FIPE - Veículos  ");
+        System.out.println("============================");
+        System.out.println("[1] Carro");
+        System.out.println("[2] Moto");
+        System.out.println("[3] Caminhão");
+        System.out.print("Escolha uma opção (1-3): ");
 
-        System.out.println(menu);
         var opcao = leitura.nextLine();
-        String endereco;
+        String endpoint;
 
-        if (opcao.toLowerCase().contains("carr")) {
-            endereco = URL_BASE + "carros/marcas";
-        } else if (opcao.toLowerCase().contains("mot")) {
-            endereco = URL_BASE + "motos/marcas";
-        } else {
-            endereco = URL_BASE + "caminhoes/marcas";
+        switch (opcao) {
+            case "1" -> endpoint = "carros/marcas";
+            case "2" -> endpoint = "motos/marcas";
+            case "3" -> endpoint = "caminhoes/marcas";
+            default -> {
+                System.out.println("Opção inválida.");
+                return;
+            }
         }
 
-        var json = consumo.obterDados(endereco);
+        var json = consumo.obterDados(endpoint);
         if (json == null) {
             System.out.println("❌ Erro ao buscar as marcas. Tente novamente mais tarde.");
             return;
@@ -55,7 +53,7 @@ public class Principal {
         while (true) {
             System.out.println("Informe o código da marca para consulta: ");
             codigoMarca = leitura.nextLine();
-            final String codigoMarcaFinal = codigoMarca; // necessário para lambda
+            final String codigoMarcaFinal = codigoMarca;
             boolean existe = marcas.stream().anyMatch(m -> m.codigo().equals(codigoMarcaFinal));
             if (existe) {
                 break;
@@ -63,8 +61,8 @@ public class Principal {
             System.out.println("Código de marca inválido. Tente novamente.");
         }
 
-        endereco = endereco + "/" + codigoMarca + "/modelos";
-        json = consumo.obterDados(endereco);
+        endpoint = endpoint + "/" + codigoMarca + "/modelos";
+        json = consumo.obterDados(endpoint);
         if (json == null) {
             System.out.println("❌ Erro ao buscar os modelos. Tente novamente mais tarde.");
             return;
@@ -103,8 +101,8 @@ public class Principal {
             System.out.println("Código de modelo inválido. Tente novamente.");
         }
 
-        endereco = endereco + "/" + codigoModelo + "/anos";
-        json = consumo.obterDados(endereco);
+        endpoint = endpoint + "/" + codigoModelo + "/anos";
+        json = consumo.obterDados(endpoint);
         if (json == null) {
             System.out.println("❌ Erro ao buscar os anos do modelo. Tente novamente mais tarde.");
             return;
@@ -113,8 +111,8 @@ public class Principal {
         List<Veiculo> veiculos = new ArrayList<>();
 
         for (var ano : anos) {
-            var enderecoAnos = endereco + "/" + ano.codigo();
-            json = consumo.obterDados(enderecoAnos);
+            var endpointAnos = endpoint + "/" + ano.codigo();
+            json = consumo.obterDados(endpointAnos);
             if (json == null) {
                 System.out.println("⚠️ Não foi possível buscar avaliação para o ano " + ano.codigo());
                 continue;
